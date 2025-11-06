@@ -1,6 +1,6 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f8f9fa;
+  font-family: "Segoe UI", sans-serif;
+  background: #f6f9fc;
   margin: 0;
   padding: 20px;
 }
@@ -19,7 +19,7 @@ button {
   background: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 8px 14px;
   margin: 5px;
   cursor: pointer;
@@ -48,5 +48,6 @@ th {
 
 #chartContainer {
   max-width: 600px;
-  margin: 20px auto;
+  margin: 30px auto;
 }
+

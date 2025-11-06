@@ -1,7 +1,17 @@
 let data = [];
 let headers = [];
 
-document.getElementById("loadBtn").addEventListener("click", () => {
+const loadBtn = document.getElementById("loadBtn");
+const exportBtn = document.getElementById("exportBtn");
+const content = document.getElementById("content");
+
+document.getElementById("btnVer").onclick = showTable;
+document.getElementById("btnAdd").onclick = showAddForm;
+document.getElementById("btnConsultas").onclick = showQueries;
+document.getElementById("btnStats").onclick = showStats;
+
+// ---- Cargar CSV ----
+loadBtn.addEventListener("click", () => {
   const file = document.getElementById("fileInput").files[0];
   if (!file) return alert("Selecciona un archivo CSV");
   Papa.parse(file, {
@@ -10,25 +20,24 @@ document.getElementById("loadBtn").addEventListener("click", () => {
     complete: (res) => {
       data = res.data.filter(r => Object.values(r).some(v => v !== null && v !== ""));
       headers = res.meta.fields;
+      alert("CSV cargado correctamente ✅");
       showTable();
     }
   });
 });
 
+// ---- Mostrar tabla ----
 function showTable() {
-  const div = document.getElementById("content");
-  if (!data.length) return div.innerHTML = "<p>No hay datos cargados.</p>";
+  if (!data.length) return content.innerHTML = "<p>No hay datos cargados.</p>";
 
-  let html = `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}<th>Acciones</th></tr></thead><tbody>`;
+  let html = `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}<th>Acción</th></tr></thead><tbody>`;
   data.forEach((row, i) => {
     html += "<tr>";
-    headers.forEach(h => {
-      html += `<td contenteditable onblur="updateCell(${i}, '${h}', this.innerText)">${row[h] ?? ''}</td>`;
-    });
+    headers.forEach(h => html += `<td contenteditable onblur="updateCell(${i}, '${h}', this.innerText)">${row[h] ?? ""}</td>`);
     html += `<td><button onclick="deleteRow(${i})">🗑️</button></td></tr>`;
   });
   html += "</tbody></table>";
-  div.innerHTML = html;
+  content.innerHTML = html;
 }
 
 function updateCell(row, col, val) {
@@ -36,20 +45,19 @@ function updateCell(row, col, val) {
 }
 
 function deleteRow(i) {
-  if (confirm("¿Eliminar fila?")) {
+  if (confirm("¿Eliminar esta fila?")) {
     data.splice(i, 1);
     showTable();
   }
 }
 
+// ---- Agregar fila ----
 function showAddForm() {
-  const div = document.getElementById("content");
-  if (!headers.length) return div.innerHTML = "<p>Carga un CSV primero.</p>";
-
-  let html = `<h3>Agregar nueva fila</h3><div id="addForm">`;
-  headers.forEach(h => html += `<input placeholder="${h}" id="new_${h}" />`);
+  if (!headers.length) return content.innerHTML = "<p>Carga un CSV primero.</p>";
+  let html = `<h3>Agregar nueva fila</h3><div id="formAdd">`;
+  headers.forEach(h => html += `<input placeholder="${h}" id="new_${h}">`);
   html += `</div><button onclick="addRow()">Agregar</button>`;
-  div.innerHTML = html;
+  content.innerHTML = html;
 }
 
 function addRow() {
@@ -59,7 +67,9 @@ function addRow() {
   showTable();
 }
 
-document.getElementById("exportBtn").addEventListener("click", () => {
+// ---- Exportar CSV ----
+exportBtn.addEventListener("click", () => {
+  if (!data.length) return alert("No hay datos para exportar");
   const csv = Papa.unparse(data);
   const blob = new Blob([csv], { type: "text/csv" });
   const link = document.createElement("a");
@@ -68,75 +78,55 @@ document.getElementById("exportBtn").addEventListener("click", () => {
   link.click();
 });
 
-// -------------------- CONSULTAS (simulan map/filter/reduce) --------------------
-
+// ---- Consultas ----
 function showQueries() {
-  const div = document.getElementById("content");
-  div.innerHTML = `
+  content.innerHTML = `
     <h3>Consultas</h3>
-    <button onclick="qTotalRows()">Total de filas</button>
-    <button onclick="qColumnList()">Lista de columnas</button>
-    <button onclick="qNullCounts()">Conteo nulos</button>
-    <button onclick="qMean()">Promedio columna</button>
-    <button onclick="qMinMax()">Mínimo/Máximo</button>
-    <div id="queryResult"></div>
-  `;
+    <button onclick="qTotal()">Total de filas</button>
+    <button onclick="qColumns()">Lista de columnas</button>
+    <button onclick="qMean()">Promedio</button>
+    <div id="result"></div>`;
 }
 
-function qTotalRows() {
-  showQuery(`Total de filas: ${data.length}`);
+function showResult(txt) {
+  document.getElementById("result").innerHTML = `<pre>${txt}</pre>`;
 }
 
-function qColumnList() {
-  showQuery(`Columnas: ${headers.join(', ')}`);
+function qTotal() {
+  showResult(`Total de filas: ${data.length}`);
 }
 
-function qNullCounts() {
-  const res = {};
-  headers.forEach(h => res[h] = data.filter(r => !r[h]).length);
-  showQuery(JSON.stringify(res, null, 2));
+function qColumns() {
+  showResult(`Columnas: ${headers.join(", ")}`);
 }
 
 function qMean() {
-  const col = prompt("Nombre de la columna numérica:");
-  const vals = data.map(r => parseFloat(r[col])).filter(x => !isNaN(x));
-  const avg = vals.reduce((a,b) => a+b, 0) / vals.length;
-  showQuery(`Promedio de ${col}: ${avg.toFixed(2)}`);
-}
-
-function qMinMax() {
   const col = prompt("Columna numérica:");
-  const vals = data.map(r => parseFloat(r[col])).filter(x => !isNaN(x));
-  const min = Math.min(...vals);
-  const max = Math.max(...vals);
-  showQuery(`Min: ${min}, Max: ${max}`);
+  const nums = data.map(r => parseFloat(r[col])).filter(x => !isNaN(x));
+  if (!nums.length) return alert("No hay valores numéricos");
+  const avg = nums.reduce((a, b) => a + b, 0) / nums.length;
+  showResult(`Promedio de ${col}: ${avg.toFixed(2)}`);
 }
 
-function showQuery(txt) {
-  document.getElementById("queryResult").innerHTML = `<pre>${txt}</pre>`;
-}
-
-// -------------------- ESTADÍSTICAS Y GRÁFICOS --------------------
-
+// ---- Estadísticas ----
 function showStats() {
-  const div = document.getElementById("content");
-  if (!headers.length) return div.innerHTML = "<p>Carga un CSV primero.</p>";
-
-  let html = `<h3>Estadísticas</h3>
-  <select id="colSelect">${headers.map(h => `<option>${h}</option>`)}</select>
-  <button onclick="drawHistogram()">Histograma</button>
-  <div id="chartContainer"><canvas id="chart"></canvas></div>`;
-  div.innerHTML = html;
+  if (!headers.length) return content.innerHTML = "<p>Carga un CSV primero.</p>";
+  content.innerHTML = `
+    <h3>Estadísticas</h3>
+    <select id="colSelect">${headers.map(h => `<option>${h}</option>`)}</select>
+    <button onclick="drawChart()">Graficar</button>
+    <div id="chartContainer"><canvas id="chart"></canvas></div>`;
 }
 
-function drawHistogram() {
+function drawChart() {
   const col = document.getElementById("colSelect").value;
   const vals = data.map(r => parseFloat(r[col])).filter(x => !isNaN(x));
-  const ctx = document.getElementById("chart");
+  if (!vals.length) return alert("No hay datos numéricos para graficar");
+  const ctx = document.getElementById("chart").getContext("2d");
   new Chart(ctx, {
     type: "bar",
     data: {
-      labels: vals,
+      labels: vals.map((_, i) => i + 1),
       datasets: [{ label: col, data: vals }]
     },
     options: { responsive: true }

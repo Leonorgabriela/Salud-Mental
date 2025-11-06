@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSV Data Manager Web</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>CSV Data Manager (Simulación Python)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>📊 CSV Data Manager</h1>
 
-  <div id="controls">
-    <input type="file" id="fileInput" accept=".csv" />
+  <section id="load">
+    <input type="file" id="fileInput" accept=".csv">
     <button id="loadBtn">Cargar CSV</button>
     <button id="exportBtn">Exportar CSV</button>
-  </div>
+  </section>
 
-  <div id="tableContainer"></div>
+  <section id="menu">
+    <button onclick="showTable()">Ver Datos</button>
+    <button onclick="showAddForm()">Agregar Fila</button>
+    <button onclick="showQueries()">Consultas</button>
+    <button onclick="showStats()">Resumen</button>
+  </section>
 
-  <h3>Agregar nueva fila</h3>
-  <div id="addRow"></div>
-  <button id="addRowBtn">Agregar Fila</button>
+  <section id="content"></section>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <footer>
+    <p>Versión web simulada del CSVManager (sin Python).</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
-

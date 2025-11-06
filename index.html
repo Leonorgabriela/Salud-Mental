@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CSV Data Manager (Simulación Python)</title>
+  <title>Gestor CSV (Simulación Python)</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>📊 CSV Data Manager</h1>
@@ -17,18 +15,24 @@
   </section>
 
   <section id="menu">
-    <button onclick="showTable()">Ver Datos</button>
-    <button onclick="showAddForm()">Agregar Fila</button>
-    <button onclick="showQueries()">Consultas</button>
-    <button onclick="showStats()">Resumen</button>
+    <button id="btnVer">Ver Datos</button>
+    <button id="btnAdd">Agregar Fila</button>
+    <button id="btnConsultas">Consultas</button>
+    <button id="btnStats">Estadísticas</button>
   </section>
 
   <section id="content"></section>
 
   <footer>
-    <p>Versión web simulada del CSVManager (sin Python).</p>
+    <p>Versión web simulada del CSVManager (sin Python)</p>
   </footer>
 
+  <!-- Cargar librerías externas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>
+

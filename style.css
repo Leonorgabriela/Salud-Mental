@@ -3,7 +3,6 @@ body {
   background: #f8f9fa;
   margin: 0;
   padding: 20px;
-  color: #333;
 }
 
 h1 {
@@ -11,19 +10,19 @@ h1 {
   color: #007bff;
 }
 
-#controls {
+#menu, #load {
   text-align: center;
-  margin-bottom: 20px;
+  margin: 15px 0;
 }
 
 button {
   background: #007bff;
   color: white;
   border: none;
-  padding: 8px 14px;
   border-radius: 5px;
-  cursor: pointer;
+  padding: 8px 14px;
   margin: 5px;
+  cursor: pointer;
 }
 
 button:hover {
@@ -37,8 +36,9 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 8px;
+  text-align: left;
 }
 
 th {
@@ -46,11 +46,7 @@ th {
   color: white;
 }
 
-tr:nth-child(even) {
-  background: #f2f2f2;
-}
-
-input[type="text"] {
-  width: 90%;
-  padding: 5px;
+#chartContainer {
+  max-width: 600px;
+  margin: 20px auto;
 }

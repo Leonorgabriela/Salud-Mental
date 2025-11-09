@@ -1,54 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>CSV Data Manager - Simulación completa</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Librerías externas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <title>CSV Data Manager (Web)</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
   <header>
-    <h1>CSV Data Manager — Interfaz (simula tu CLI Python)</h1>
-  </header>
-
-  <section id="top">
-    <div class="row">
-      <input type="file" id="fileInput" accept=".csv" />
+    <h1>CSV Data Manager - Versión Web</h1>
+    <div class="row" style="justify-content:center;">
+      <input type="file" id="fileInput" accept=".csv">
       <button id="loadBtn">Cargar CSV</button>
       <button id="exportBtn">Exportar CSV</button>
     </div>
-    <p class="hint">Carga un CSV para habilitar las opciones del menú. Usa <code>sample.csv</code> para probar.</p>
-  </section>
+    <p class="hint">Este proyecto replica la app de Python (CRUD + consultas + gráficos) directamente en el navegador.</p>
+  </header>
 
-  <section id="menuSection">
-    <h2>--- CSV Data Manager - Menú CLI ---</h2>
-    <ol class="menu-list">
-      <li><button id="opt1">1. Mostrar primeras filas</button></li>
-      <li><button id="opt2">2. Agregar fila (CREATE)</button></li>
-      <li><button id="opt3">3. Actualizar fila (UPDATE)</button></li>
-      <li><button id="opt4">4. Borrar fila (DELETE)</button></li>
-      <li><button id="opt5">5. Buscar texto en columna</button></li>
-      <li><button id="opt6">6. Filtrar filas (expresión)</button></li>
-      <li><button id="opt7">7. Ordenar por columna</button></li>
-      <li><button id="opt8">8. Consultas/predefinidas (15)</button></li>
-      <li><button id="opt9">9. Estadísticas y resumen</button></li>
-      <li><button id="opt10">10. Exportar CSV</button></li>
-      <li><button id="opt11">11. Gráficos</button></li>
-      <li><button id="opt12">12. Abrir GUI (opcional)</button></li>
-      <li><button id="opt0">0. Salir (limpiar)</button></li>
-    </ol>
-  </section>
+  <ul class="menu-list">
+    <li><button id="opt1">1. Mostrar primeras filas</button></li>
+    <li><button id="opt2">2. Agregar fila</button></li>
+    <li><button id="opt3">3. Actualizar fila</button></li>
+    <li><button id="opt4">4. Borrar fila</button></li>
+    <li><button id="opt5">5. Buscar texto en columna</button></li>
+    <li><button id="opt6">6. Filtrar filas (expresión JS)</button></li>
+    <li><button id="opt7">7. Ordenar por columna</button></li>
+    <li><button id="opt8">8. Consultas (map/filter/reduce)</button></li>
+    <li><button id="opt9">9. Estadísticas</button></li>
+    <li><button id="opt10">10. Exportar CSV</button></li>
+    <li><button id="opt11">11. Gráficos</button></li>
+  </ul>
 
-  <main id="content">
-    <p id="welcome">Bienvenida — carga un CSV para comenzar.</p>
-  </main>
+  <div id="content"></div>
 
-  <footer>
-    <p>Simulación del CSVManager en JavaScript — los cambios se mantienen en memoria hasta que exportes.</p>
-  </footer>
+  <script src="js/script.js"></script>
 </body>
 </html>
-

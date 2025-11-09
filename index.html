@@ -2,41 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CSV Data Manager (Web CRUD)</title>
+  <title>CSV Data Manager - Web</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h1>📊 CSV Data Manager - Versión Web</h1>
-    <div class="toolbar">
+    <h1>CSV Data Manager (Versión Web)</h1>
+    <div class="row" style="justify-content:center;">
       <input type="file" id="fileInput" accept=".csv">
       <button id="loadBtn">Cargar CSV</button>
       <button id="exportBtn">Exportar CSV</button>
-      <button id="themeBtn">🌙 Modo Oscuro</button>
     </div>
+    <p class="hint">Sube un archivo CSV y usa las opciones del menú.</p>
   </header>
 
-  <section class="menu">
-    <button id="opt1">1️⃣ Mostrar primeras filas</button>
-    <button id="opt2">2️⃣ Agregar fila</button>
-    <button id="opt3">3️⃣ Actualizar fila</button>
-    <button id="opt4">4️⃣ Borrar fila</button>
-    <button id="opt5">5️⃣ Buscar texto en columna</button>
-    <button id="opt6">6️⃣ Filtrar filas (expresión JS)</button>
-    <button id="opt7">7️⃣ Ordenar por columna</button>
-    <button id="opt8">8️⃣ Estadísticas</button>
-    <button id="opt9">9️⃣ Gráfico</button>
-  </section>
+  <ul class="menu-list">
+    <li><button id="opt1">1. Mostrar primeras filas</button></li>
+    <li><button id="opt2">2. Agregar fila</button></li>
+    <li><button id="opt3">3. Actualizar fila</button></li>
+    <li><button id="opt4">4. Borrar fila</button></li>
+    <li><button id="opt5">5. Buscar texto en columna</button></li>
+    <li><button id="opt6">6. Filtrar filas (expresión JS)</button></li>
+    <li><button id="opt7">7. Ordenar por columna</button></li>
+    <li><button id="opt8">8. Estadísticas</button></li>
+    <li><button id="opt9">9. Gráfico simple</button></li>
+  </ul>
 
-  <main id="content">
-    <p>📥 Carga tu archivo CSV para comenzar.</p>
-  </main>
-
-  <footer>
-    <p>Desarrollado por Gabi 👩‍💻 — Proyecto educativo</p>
-  </footer>
+  <div id="content"></div>
 
   <script src="js/script.js"></script>
 </body>

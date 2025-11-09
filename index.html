@@ -1,134 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>CSV Data Manager - Versión Web</title>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body{font-family:"Segoe UI",sans-serif;margin:0;background:#f7f9fc;color:#222;}
-header{text-align:center;background:#0069a3;color:white;padding:20px;}
-.menu-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;padding:20px;list-style:none;}
-.menu-list button{width:100%;padding:12px;border:none;background:#0084cc;color:white;border-radius:10px;font-size:15px;cursor:pointer;transition:0.2s;}
-.menu-list button:hover{background:#005f8c;}
-#content{background:white;margin:20px;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);overflow-x:auto;}
-table{width:100%;border-collapse:collapse;}
-th,td{border:1px solid #ddd;padding:6px;text-align:left;}
-canvas{max-width:600px;margin:20px auto;display:block;}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSV Data Manager — UI bonita</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Librerías -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  <!-- App script -->
+  <script src="script.js" defer></script>
 </head>
 <body>
-<header>
-  <h1>CSV Data Manager (Web)</h1>
-  <div class="row" style="justify-content:center;">
-    <input type="file" id="fileInput" accept=".csv">
-    <button id="loadBtn">Cargar CSV</button>
-    <button id="exportBtn">Exportar CSV</button>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>CSV Manager</h2>
+        <small>Simula tu CLI en web</small>
+      </div>
+
+      <div class="file-load">
+        <input id="fileInput" type="file" accept=".csv" />
+        <button id="loadBtn" class="btn">Cargar CSV</button>
+        <button id="exportBtn" class="btn ghost">Exportar CSV</button>
+      </div>
+
+      <nav class="menu">
+        <button class="menu-btn" data-action="1">1. Mostrar primeras filas</button>
+        <button class="menu-btn" data-action="2">2. Agregar fila (CREATE)</button>
+        <button class="menu-btn" data-action="3">3. Actualizar fila (UPDATE)</button>
+        <button class="menu-btn" data-action="4">4. Borrar fila (DELETE)</button>
+        <button class="menu-btn" data-action="5">5. Buscar texto en columna</button>
+        <button class="menu-btn" data-action="6">6. Filtrar filas (expresión)</button>
+        <button class="menu-btn" data-action="7">7. Ordenar por columna</button>
+        <button class="menu-btn" data-action="8">8. Consultas/predefinidas (15)</button>
+        <button class="menu-btn" data-action="9">9. Estadísticas y resumen</button>
+        <button class="menu-btn" data-action="10">10. Exportar CSV</button>
+        <button class="menu-btn" data-action="11">11. Gráficos</button>
+        <button class="menu-btn" data-action="12">12. Abrir GUI (opcional)</button>
+        <button class="menu-btn danger" data-action="0">0. Salir (limpiar)</button>
+      </nav>
+
+      <div class="footer-note">
+        <small>Los cambios se mantienen en memoria hasta que exportes.</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <h1 id="title">Bienvenida</h1>
+        <p id="sub">Carga un CSV para comenzar.</p>
+      </header>
+
+      <section id="controls" class="controls"></section>
+
+      <section id="content" class="content">
+        <p class="muted">Aquí se mostrarán la tabla, formularios, resultados y gráficos.</p>
+      </section>
+    </main>
   </div>
-  <p class="hint">Sube un archivo CSV y luego usa las opciones del menú.</p>
-</header>
 
-<ul class="menu-list">
-  <li><button id="opt1">1. Mostrar primeras filas</button></li>
-  <li><button id="opt2">2. Agregar fila</button></li>
-  <li><button id="opt3">3. Actualizar fila</button></li>
-  <li><button id="opt4">4. Borrar fila</button></li>
-  <li><button id="opt5">5. Buscar texto</button></li>
-  <li><button id="opt6">6. Filtrar filas</button></li>
-  <li><button id="opt7">7. Ordenar</button></li>
-  <li><button id="opt8">8. Promedio</button></li>
-  <li><button id="opt9">9. Gráfico</button></li>
-</ul>
-
-<div id="content"></div>
-
-<script>
-let data=[],headers=[];
-const content=document.getElementById("content");
-const fileInput=document.getElementById("fileInput");
-function show(msg){content.innerHTML=msg;}
-function renderTable(rows=data){
-  if(!rows.length)return show("<p>No hay datos cargados.</p>");
-  const table=document.createElement("table");
-  const thead=document.createElement("thead");
-  thead.innerHTML="<tr>"+headers.map(h=>`<th>${h}</th>`).join("")+"</tr>";
-  table.appendChild(thead);
-  const tbody=document.createElement("tbody");
-  rows.forEach(r=>{
-    const row=document.createElement("tr");
-    row.innerHTML=headers.map(h=>`<td>${r[h]}</td>`).join("");
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  content.innerHTML="";
-  content.appendChild(table);
-}
-document.getElementById("loadBtn").addEventListener("click",()=>{
-  const file=fileInput.files[0];
-  if(!file)return alert("Selecciona un CSV primero");
-  Papa.parse(file,{header:true,dynamicTyping:true,complete:(res)=>{
-    data=res.data.filter(r=>Object.keys(r).length>0);
-    headers=Object.keys(data[0]);
-    renderTable(data.slice(0,5));
-  }});
-});
-document.getElementById("exportBtn").addEventListener("click",()=>{
-  if(!data.length)return alert("Nada que exportar");
-  const csv=Papa.unparse(data);
-  const blob=new Blob([csv],{type:"text/csv"});
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(blob);
-  link.download="data_export.csv";
-  link.click();
-});
-document.getElementById("opt1").addEventListener("click",()=>renderTable(data.slice(0,5)));
-document.getElementById("opt2").addEventListener("click",()=>{
-  if(!headers.length)return alert("Carga un CSV primero");
-  const newRow={};headers.forEach(h=>newRow[h]=prompt(`Valor para ${h}:`)||"");
-  data.push(newRow);renderTable(data.slice(-5));
-});
-document.getElementById("opt3").addEventListener("click",()=>{
-  const idx=parseInt(prompt("Fila a actualizar (0,1,2...)"));
-  if(isNaN(idx)||idx<0||idx>=data.length)return alert("Índice inválido");
-  headers.forEach(h=>{
-    const val=prompt(`Nuevo valor para ${h} (actual: ${data[idx][h]})`);
-    if(val!==null&&val!=="")data[idx][h]=val;
-  });
-  renderTable(data.slice(idx,idx+1));
-});
-document.getElementById("opt4").addEventListener("click",()=>{
-  const idx=parseInt(prompt("Fila a eliminar:"));
-  if(isNaN(idx)||idx<0||idx>=data.length)return alert("Índice inválido");
-  data.splice(idx,1);renderTable(data.slice(0,5));
-});
-document.getElementById("opt5").addEventListener("click",()=>{
-  const col=prompt("Columna:");
-  const txt=prompt("Texto a buscar:");
-  const res=data.filter(r=>String(r[col]).includes(txt));
-  show(`<p>${res.length} resultados.</p>`);renderTable(res.slice(0,10));
-});
-document.getElementById("opt6").addEventListener("click",()=>{
-  const expr=prompt("Expresión JS (ej: row.Age>20)");
-  const res=data.filter(row=>eval(expr));
-  show(`<p>${res.length} filas cumplen.</p>`);renderTable(res.slice(0,10));
-});
-document.getElementById("opt7").addEventListener("click",()=>{
-  const col=prompt("Columna para ordenar:");
-  data.sort((a,b)=>(a[col]>b[col]?1:-1));renderTable(data.slice(0,10));
-});
-document.getElementById("opt8").addEventListener("click",()=>{
-  const col=prompt("Columna numérica:");
-  const vals=data.map(r=>Number(r[col])).filter(v=>!isNaN(v));
-  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
-  show(`<h3>Promedio de ${col}: ${avg.toFixed(2)}</h3>`);
-});
-document.getElementById("opt9").addEventListener("click",()=>{
-  const col=prompt("Columna numérica:");
-  const vals=data.map(r=>Number(r[col])).filter(v=>!isNaN(v));
-  content.innerHTML=`<h3>Gráfico de ${col}</h3><canvas id="chart"></canvas>`;
-  const ctx=document.getElementById("chart");
-  new Chart(ctx,{type:"bar",data:{labels:vals.map((_,i)=>i+1),datasets:[{label:col,data:vals}]}})
-});
-</script>
+  <!-- Modal container (reused) -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <button id="modalClose" class="modal-close">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 </body>
 </html>

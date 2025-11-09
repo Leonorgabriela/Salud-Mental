@@ -1,53 +1,46 @@
+:root {
+  --primary: #007bff;
+  --bg: #f6f9fc;
+  --card: #ffffff;
+}
+
+* { box-sizing: border-box; }
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f6f9fc;
-  margin: 0;
-  padding: 20px;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0; padding: 16px; background: var(--bg); color: #222;
 }
+header h1 { text-align: center; color: var(--primary); margin: 6px 0 18px; }
+#top { text-align: center; margin-bottom: 12px; }
+.row { display: inline-flex; gap: 8px; align-items: center; }
+.hint { text-align: center; color: #666; margin-top: 6px; }
 
-h1 {
-  text-align: center;
-  color: #007bff;
-}
-
-#menu, #load {
-  text-align: center;
-  margin: 15px 0;
-}
+.menu-list { max-width: 900px; margin: 0 auto 20px; padding-left: 20px; }
+.menu-list li { margin: 6px 0; }
 
 button {
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
-  margin: 5px;
-  cursor: pointer;
+  background: var(--primary); color: #fff; border: none;
+  padding: 8px 12px; border-radius: 6px; cursor: pointer;
+  font-size: 14px;
 }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-button:hover {
-  background: #0056b3;
+#content {
+  max-width: 1100px; margin: 0 auto; background: var(--card);
+  padding: 14px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
 table {
-  border-collapse: collapse;
-  width: 100%;
-  background: white;
+  width: 100%; border-collapse: collapse; margin-top: 12px;
 }
-
 th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+  border: 1px solid #e3e6ea; padding: 8px; text-align: left;
 }
+th { background: var(--primary); color: #fff; position: sticky; top: 0; }
+td[contenteditable] { background: #fffdfa; }
 
-th {
-  background: #007bff;
-  color: white;
-}
+.controls-row { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.input-inline { padding:6px 8px; border-radius:6px; border:1px solid #ccc; }
 
-#chartContainer {
-  max-width: 600px;
-  margin: 30px auto;
-}
-
+#chartContainer { max-width: 800px; margin: 18px auto; }
+pre { background:#fafafa; padding:10px; border-radius:6px; overflow:auto; }
+small.note { color:#666; display:block; margin-top:6px; }

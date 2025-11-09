@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CSV Data Manager (Web)</title>
+  <title>CSV Data Manager - Versión Web</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
@@ -14,7 +15,7 @@
       <button id="loadBtn">Cargar CSV</button>
       <button id="exportBtn">Exportar CSV</button>
     </div>
-    <p class="hint">Este proyecto replica la app de Python (CRUD + consultas + gráficos) directamente en el navegador.</p>
+    <p class="hint">Proyecto basado en el CRUD de Python con Pandas, ahora en versión web sin servidor.</p>
   </header>
 
   <ul class="menu-list">
@@ -25,10 +26,8 @@
     <li><button id="opt5">5. Buscar texto en columna</button></li>
     <li><button id="opt6">6. Filtrar filas (expresión JS)</button></li>
     <li><button id="opt7">7. Ordenar por columna</button></li>
-    <li><button id="opt8">8. Consultas (map/filter/reduce)</button></li>
-    <li><button id="opt9">9. Estadísticas</button></li>
-    <li><button id="opt10">10. Exportar CSV</button></li>
-    <li><button id="opt11">11. Gráficos</button></li>
+    <li><button id="opt8">8. Estadísticas (map/filter/reduce)</button></li>
+    <li><button id="opt9">9. Gráficos</button></li>
   </ul>
 
   <div id="content"></div>

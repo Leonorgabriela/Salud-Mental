@@ -1,70 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CSV Manager — Vinotinto / Negro</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Salud Mental Estudiantil</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Librerías -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-
-  <!-- Lógica -->
-  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <h2>CSV Manager</h2>
-        <small>Simula tu CLI — tema vinotinto</small>
-      </div>
+  <h1>Gestor de Salud Mental Estudiantil</h1>
 
-      <div class="file-area">
-        <input id="fileInput" type="file" accept=".csv" />
-        <button id="btnLoad" class="btn">Cargar CSV</button>
-        <button id="btnExport" class="btn ghost">Exportar CSV</button>
-      </div>
+  <input type="file" id="csvFile" accept=".csv" />
+  <button onclick="loadCSV()">Cargar CSV</button>
 
-      <nav class="menu">
-        <div class="menu-title">--- Menú CLI ---</div>
-        <button class="menu-btn" data-action="1">1. Mostrar primeras filas</button>
-        <button class="menu-btn" data-action="2">2. Agregar fila (CREATE)</button>
-        <button class="menu-btn" data-action="3">3. Actualizar fila (UPDATE)</button>
-        <button class="menu-btn" data-action="4">4. Borrar fila (DELETE)</button>
-        <button class="menu-btn" data-action="5">5. Buscar texto en columna</button>
-        <button class="menu-btn" data-action="6">6. Filtrar filas (expresión)</button>
-        <button class="menu-btn" data-action="7">7. Ordenar por columna</button>
-        <button class="menu-btn" data-action="8">8. Consultas/predefinidas (15)</button>
-        <button class="menu-btn" data-action="9">9. Estadísticas y resumen</button>
-        <button class="menu-btn" data-action="10">10. Exportar CSV</button>
-        <button class="menu-btn" data-action="11">11. Gráficos</button>
-        <button class="menu-btn" data-action="12">12. Abrir GUI (mostrar tabla)</button>
-        <button class="menu-btn danger" data-action="0">0. Salir (limpiar)</button>
-      </nav>
-
-      <div class="footer-note">
-        <small>Los cambios quedan en memoria hasta que exportes.</small>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header>
-        <h1 id="title">Bienvenida</h1>
-        <p id="subtitle">Carga un CSV con encabezados para comenzar.</p>
-      </header>
-
-      <section id="controls" class="controls">
-        <!-- Se renderiza contenido interactivo aquí (formularios, inputs) -->
-      </section>
-
-      <section id="content" class="content">
-        <p class="muted">Aquí se muestran la tabla, resultados, consultas y gráficos.</p>
-      </section>
-
-    </main>
+  <div id="controls">
+    <input type="text" id="searchInput" placeholder="Buscar texto..." />
+    <select id="columnSelect"></select>
+    <button onclick="searchTable()">Buscar</button>
+    <button onclick="resetTable()">Mostrar todo</button>
   </div>
+
+  <div id="tableContainer"></div>
+
+  <canvas id="chartCanvas"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
+

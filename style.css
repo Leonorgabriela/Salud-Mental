@@ -1,84 +1,91 @@
+:root {
+  --bg: #f2f4f8;
+  --text: #222;
+  --accent: #007bff;
+  --card: #fff;
+}
+
+body.dark {
+  --bg: #1b1b1b;
+  --text: #eaeaea;
+  --accent: #00aaff;
+  --card: #2b2b2b;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f2f4f8;
-  color: #222;
-  text-align: center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
   margin: 0;
-  padding: 0;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
 }
 
 header {
-  background: #0056b3;
+  background: var(--accent);
   color: white;
   padding: 20px;
   border-radius: 0 0 10px 10px;
 }
 
-h1 {
-  margin-bottom: 10px;
+.toolbar {
+  margin-top: 10px;
 }
 
-.menu-list {
-  list-style: none;
-  padding: 0;
+button {
+  background: var(--accent);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.menu {
+  margin: 20px auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
 }
 
-.menu-list li button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.menu-list li button:hover {
-  background: #0056b3;
-}
-
 #content {
+  background: var(--card);
   margin: 20px auto;
-  max-width: 90%;
-  background: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 90%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   overflow-x: auto;
 }
 
 table {
-  width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  width: 100%;
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 6px 8px;
 }
 
 th {
-  background: #007bff;
+  background: var(--accent);
   color: white;
-}
-
-input, select {
-  padding: 5px;
-  margin: 5px;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-}
-
-button {
-  margin: 5px;
 }
 
 canvas {
   max-width: 600px;
-  margin-top: 20px;
+  margin-top: 15px;
+}
+
+footer {
+  padding: 10px;
+  font-size: 14px;
+  color: gray;
 }
